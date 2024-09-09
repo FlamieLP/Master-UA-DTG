@@ -123,6 +123,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &315910304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 315910306}
+  - component: {fileID: 315910305}
+  m_Layer: 0
+  m_Name: DTG Node God
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &315910305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315910304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de97994fa80c6aa498840067eb51d2cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodePrefab: {fileID: 3716766364307290239, guid: 494e5ad23910b1d4ab8612451b4d63f2, type: 3}
+  sourceOrigin: {fileID: 0}
+  targetOrigin: {fileID: 0}
+  sourceDimensions: {x: 10, y: 10}
+  nodesPerAxis: 3
+  displayGrit: 1
+--- !u!4 &315910306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315910304}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &398796108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,6 +1206,7 @@ MonoBehaviour:
   width: 16
   height: 16
   heatmap: {fileID: 2068439441}
+  displacementMap: {fileID: 0}
   floor: {fileID: 999876514}
   lowerLeftCorner: {fileID: 651565586}
   upperRightCorner: {fileID: 1052693714}
@@ -1311,6 +1362,7 @@ GameObject:
   - component: {fileID: 2030665284}
   - component: {fileID: 2030665285}
   - component: {fileID: 2030665286}
+  - component: {fileID: 2030665287}
   m_Layer: 0
   m_Name: PlayerInVR
   m_TagString: Untagged
@@ -1356,7 +1408,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030665283}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 192580c28e3b35e4fbab7089086b59f7, type: 3}
   m_Name: 
@@ -1366,6 +1418,21 @@ MonoBehaviour:
   source: {fileID: 914285647}
   orignSource: {fileID: 1792886454}
   origin: {fileID: 1467750916}
+--- !u!114 &2030665287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030665283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a36fe5220c00a843a5a5f61a705656d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeMap: {fileID: 315910305}
+  source: {fileID: 914285647}
+  update: 0
 --- !u!28 &2068439441
 Texture2D:
   m_ObjectHideFlags: 0
@@ -1456,3 +1523,4 @@ SceneRoots:
   - {fileID: 398796109}
   - {fileID: 961016328}
   - {fileID: 1911794233}
+  - {fileID: 315910306}

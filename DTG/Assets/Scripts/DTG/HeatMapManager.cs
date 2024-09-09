@@ -9,6 +9,7 @@ public class HeatMapManager : MonoBehaviour
     [SerializeField] private int width = 16, height = 16;
     
     [SerializeField] private Texture2D heatmap;
+    [SerializeField] private Texture2D displacementMap;
     [SerializeField] private GameObject floor;
 
     [SerializeField] private Transform lowerLeftCorner, upperRightCorner;
@@ -35,6 +36,9 @@ public class HeatMapManager : MonoBehaviour
             if (keyboard.sKey.isPressed)
             {
                 print($"Sample Gain: {GetGainFactor(pos)}");
+            } else if (keyboard.dKey.isPressed)
+            {
+                print($"Sample Displacement: {GetDisplacement(pos)}");
             } else if (keyboard.numpadPlusKey.isPressed)
             {
                 int pixelPosX = (int)Mathf.Round(pos.x * width);
@@ -81,6 +85,11 @@ public class HeatMapManager : MonoBehaviour
     public GainFactor GetGainFactor(Vector2 relativePos)
     {
         return new GainFactor(heatmap.GetPixelBilinear(relativePos.x, relativePos.y));
+    }
+    
+    public GainFactor GetDisplacement(Vector2 relativePos)
+    {
+        return new GainFactor(displacementMap.GetPixelBilinear(relativePos.x, relativePos.y));
     }
 
     [ContextMenu("Create new Heatmap")]
@@ -158,6 +167,45 @@ public class HeatMapManager : MonoBehaviour
         }
 
         _bounds = upperRightCorner.position - lowerLeftCorner.position;
+    }
+    
+    [ContextMenu("Calculate Displacement Map")]
+    private void CalcDisplacementMap()
+    {
+        if (!lowerLeftCorner || !upperRightCorner)
+        {
+            Debug.LogError("Please Set Corners first");
+            return;
+        }
+
+        Debug.Log("Creating Displacement Map...");
+
+        displacementMap = new Texture2D(width, height, TextureFormat.RG16, false);
+        var heatmapData = heatmap.GetPixels();
+        var dismapData = displacementMap.GetPixels();
+        for (int y = 0; y < height; y++)
+        {
+            float accX = 0;
+            for (int x = 0; x < width; x++)
+            {
+                var index = (y * height) + x;
+                accX += heatmapData[index].r;
+                dismapData[index].r = accX;
+            }
+        }
+        for (int x = 0; x < width; x++)
+        {
+            float accY = 0;
+            for (int y = 0; y < height; y++)
+            {
+                var index = (y * height) + x;
+                accY += heatmapData[index].g;
+                dismapData[index].g = accY;
+            }
+        }
+        displacementMap.SetPixels(dismapData);
+        displacementMap.Apply();
+        Debug.Log("Finished Creating Displacement Map!");
     }
 
     public struct GainFactor
