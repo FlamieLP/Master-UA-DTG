@@ -20,7 +20,9 @@ public class NodeMapReader : MonoBehaviour
     void Update()
     {
         if (!update) return;
+        Vector3 offset = transform.position - source.position;
+        offset.y = 0;
         
-        transform.position = nodeMap.GetMappedPosition(source.position);
+        transform.position = nodeMap.GetMappedPosition(source.position) + offset;
     }
 }
