@@ -12,13 +12,15 @@ public class NodeMap : MonoBehaviour
     
     [SerializeField] private Transform sourceOrigin, targetOrigin;
     [SerializeField] private Vector2 sourceDimensions = Vector2.one;
-    [SerializeField] private int nodesPerAxis = 3;
+    [SerializeField] private int nodesPerAxis = 4;
     
     
     [SerializeField] private bool displayGrit = true;
     
     private List<Node> _sourceNodes = new List<Node>(), _targetNodes = new List<Node>();
     private GameObject _sourceRoot, _targetRoot;
+
+    public float fractionX, fractionY;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,70 @@ public class NodeMap : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    public Vector3 GetMappedPositionBicubic(Vector3 pos)
+    {
+        var section = GetNodeSection(pos);
+        float fracx = Mathf.Clamp01((section.x + section.ratioH) / (nodesPerAxis-1));
+        float fracy = Mathf.Clamp01((section.y + section.ratioV) / (nodesPerAxis-1));
+
+        
+        float x1 = CubicPolate( getNodeX(0,0), getNodeX(1,0), getNodeX(2,0), getNodeX(3,0), fracx );
+        float x2 = CubicPolate( getNodeX(0,1), getNodeX(1,1), getNodeX(2,1), getNodeX(3,1), fracx );
+        float x3 = CubicPolate( getNodeX(0,2), getNodeX(1,2), getNodeX(2,2), getNodeX(3,2), fracx );
+        float x4 = CubicPolate( getNodeX(0,3), getNodeX(1,3), getNodeX(2,3), getNodeX(3,3), fracx );
+        
+        float xFinal = CubicPolate( x1, x2, x3, x4, fracy );
+        
+        float y1 = CubicPolate( getNodeY(0,0), getNodeY(1,0), getNodeY(2,0), getNodeY(3,0), fracx );
+        float y2 = CubicPolate( getNodeY(0,1), getNodeY(1,1), getNodeY(2,1), getNodeY(3,1), fracx );
+        float y3 = CubicPolate( getNodeY(0,2), getNodeY(1,2), getNodeY(2,2), getNodeY(3,2), fracx );
+        float y4 = CubicPolate( getNodeY(0,3), getNodeY(1,3), getNodeY(2,3), getNodeY(3,3), fracx );
+        
+        float yFinal = CubicPolate( y1, y2, y3, y4, fracy );
+        fractionX = xFinal;
+        fractionY = yFinal;
+
+        return new Vector3(xFinal, 0, yFinal);
+
+    }
+    
+    private float CubicPolate( float v0, float v1, float v2, float v3, float frac ) {
+        float A = (v3-v2)-(v0-v1);
+        float B = (v0-v1)-A;
+        float C = v2-v0; 
+        float D = v1;
+
+        return A*Mathf.Pow(frac,3)+B*Mathf.Pow(frac,2)+C*frac+D;
+    }
+
+    public Vector3 GetMappedPositionIDW(Vector3 pos)
+    {
+        float distSum = 0;
+        Vector3 weightedSum = Vector3.zero;
+        foreach (Node node in _sourceNodes)
+        {
+            float distWeight = calcDistWeight(pos, node.GetPos());
+            
+            if (distWeight == 0)
+            {
+                return node.GetPartnerPos();
+            }
+            
+            distSum += distWeight;
+            weightedSum += distWeight * node.GetPartnerPos();
+        }
+
+        return weightedSum / distSum;
+    }
+
+    private float calcDistWeight(Vector3 pos, Vector3 refPos)
+    {
+        pos.y = 0;
+        refPos.y = 0;
+        float dist = Mathf.Pow(Vector3.Distance(pos, refPos), 2f);
+        return dist <= float.Epsilon ? 0 : 1 / dist;
     }
 
     public Vector3 GetMappedPosition(Vector3 pos)
@@ -138,6 +204,16 @@ public class NodeMap : MonoBehaviour
                 }
             };
         }
+    }
+
+    private float getNodeX(int x, int y)
+    {
+        return _sourceNodes[y * nodesPerAxis + x].GetPartnerPos().x;
+    }
+    
+    private float getNodeY(int x, int y)
+    {
+        return _sourceNodes[y * nodesPerAxis + x].GetPartnerPos().z;
     }
 
     private void OnDrawGizmosSelected()

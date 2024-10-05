@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using OpenCover.Framework.Model;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -23,6 +24,8 @@ public class NodeMapReader : MonoBehaviour
         Vector3 offset = transform.position - source.position;
         offset.y = 0;
         
-        transform.position = nodeMap.GetMappedPosition(source.position) + offset;
+        //transform.position = nodeMap.GetMappedPosition(source.position) + offset;
+        //transform.position = nodeMap.GetMappedPositionIDW(source.position) + offset; //Not the way!
+        transform.position = nodeMap.GetMappedPositionBicubic(source.position) + offset;
     }
 }
