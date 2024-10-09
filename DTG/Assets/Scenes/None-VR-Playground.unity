@@ -156,8 +156,10 @@ MonoBehaviour:
   sourceOrigin: {fileID: 0}
   targetOrigin: {fileID: 0}
   sourceDimensions: {x: 10, y: 10}
-  nodesPerAxis: 3
+  nodesPerAxis: 4
   displayGrit: 1
+  fractionX: 0
+  fractionY: 0
 --- !u!4 &315910306
 Transform:
   m_ObjectHideFlags: 0
@@ -847,6 +849,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1467750916}
+  - component: {fileID: 1467750917}
   m_Layer: 0
   m_Name: VrPlayerRoot
   m_TagString: Untagged
@@ -870,6 +873,21 @@ Transform:
   - {fileID: 2030665284}
   m_Father: {fileID: 398796109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1467750917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467750915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a36fe5220c00a843a5a5f61a705656d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeMap: {fileID: 315910305}
+  source: {fileID: 2030665284}
+  update: 0
 --- !u!1 &1602829789
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,7 +1443,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030665283}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a36fe5220c00a843a5a5f61a705656d, type: 3}
   m_Name: 

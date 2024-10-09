@@ -37,21 +37,23 @@ public class NodeMap : MonoBehaviour
     public Vector3 GetMappedPositionBicubic(Vector3 pos)
     {
         var section = GetNodeSection(pos);
-        float fracx = Mathf.Clamp01((section.x + section.ratioH) / (nodesPerAxis-1));
-        float fracy = Mathf.Clamp01((section.y + section.ratioV) / (nodesPerAxis-1));
+        float fracx = Mathf.Clamp01(section.ratioH);
+        float fracy = Mathf.Clamp01(section.ratioV);
+        int x = section.x;
+        int y = section.y;
 
         
-        float x1 = CubicPolate( getNodeX(0,0), getNodeX(1,0), getNodeX(2,0), getNodeX(3,0), fracx );
-        float x2 = CubicPolate( getNodeX(0,1), getNodeX(1,1), getNodeX(2,1), getNodeX(3,1), fracx );
-        float x3 = CubicPolate( getNodeX(0,2), getNodeX(1,2), getNodeX(2,2), getNodeX(3,2), fracx );
-        float x4 = CubicPolate( getNodeX(0,3), getNodeX(1,3), getNodeX(2,3), getNodeX(3,3), fracx );
+        float x1 = CubicPolate( getNodeX(x-1,y-1), getNodeX(x,y-1), getNodeX(x+1,y-1), getNodeX(x+2,y-1), fracx );
+        float x2 = CubicPolate( getNodeX(x-1,y), getNodeX(x,y), getNodeX(x+1,y), getNodeX(x+2,y), fracx );
+        float x3 = CubicPolate( getNodeX(x-1,y+1), getNodeX(x,y+1), getNodeX(x+1,y+1), getNodeX(x+2,y+1), fracx );
+        float x4 = CubicPolate( getNodeX(x-1,y+2), getNodeX(x,y+2), getNodeX(x+1,y+2), getNodeX(x+2,y+2), fracx );
         
         float xFinal = CubicPolate( x1, x2, x3, x4, fracy );
         
-        float y1 = CubicPolate( getNodeY(0,0), getNodeY(1,0), getNodeY(2,0), getNodeY(3,0), fracx );
-        float y2 = CubicPolate( getNodeY(0,1), getNodeY(1,1), getNodeY(2,1), getNodeY(3,1), fracx );
-        float y3 = CubicPolate( getNodeY(0,2), getNodeY(1,2), getNodeY(2,2), getNodeY(3,2), fracx );
-        float y4 = CubicPolate( getNodeY(0,3), getNodeY(1,3), getNodeY(2,3), getNodeY(3,3), fracx );
+        float y1 = CubicPolate( getNodeY(x-1,y-1), getNodeY(x,y-1), getNodeY(x+1,y-1), getNodeY(x+2,y-1), fracx );
+        float y2 = CubicPolate( getNodeY(x-1,y), getNodeY(x,y), getNodeY(x+1,y), getNodeY(x+2,y), fracx );
+        float y3 = CubicPolate( getNodeY(x-1,y+1), getNodeY(x,y+1), getNodeY(x+1,y+1), getNodeY(x+2,y+1), fracx );
+        float y4 = CubicPolate( getNodeY(x-1,y+2), getNodeY(x,y+2), getNodeY(x+1,y+2), getNodeY(x+2,y+2), fracx );
         
         float yFinal = CubicPolate( y1, y2, y3, y4, fracy );
         fractionX = xFinal;
@@ -208,12 +210,16 @@ public class NodeMap : MonoBehaviour
 
     private float getNodeX(int x, int y)
     {
-        return _sourceNodes[y * nodesPerAxis + x].GetPartnerPos().x;
+        int cX = Mathf.Clamp(x, 0, nodesPerAxis - 1);
+        int cY = Mathf.Clamp(y, 0, nodesPerAxis - 1);
+        return _sourceNodes[cY * nodesPerAxis + cX].GetPartnerPos().x + (cX-x);
     }
     
     private float getNodeY(int x, int y)
     {
-        return _sourceNodes[y * nodesPerAxis + x].GetPartnerPos().z;
+        int cX = Mathf.Clamp(x, 0, nodesPerAxis - 1);
+        int cY = Mathf.Clamp(y, 0, nodesPerAxis - 1);
+        return _sourceNodes[cY * nodesPerAxis + cX].GetPartnerPos().z + + (cY-y);
     }
 
     private void OnDrawGizmosSelected()
