@@ -276,6 +276,8 @@ MonoBehaviour:
   sourceDimensions: {x: 2, y: 2}
   nodesPerAxis: 4
   displayGrit: 1
+  fractionX: 0
+  fractionY: 0
 --- !u!4 &359519684
 Transform:
   m_ObjectHideFlags: 0
@@ -659,6 +661,7 @@ GameObject:
   - component: {fileID: 1471511412}
   - component: {fileID: 1471511413}
   - component: {fileID: 1471511414}
+  - component: {fileID: 1471511415}
   m_Layer: 0
   m_Name: TGDriver
   m_TagString: Untagged
@@ -714,6 +717,22 @@ MonoBehaviour:
   nodeMap: {fileID: 359519683}
   source: {fileID: 464106559}
   update: 0
+--- !u!114 &1471511415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471511411}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28b849506c145f4b943e838d9c32172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 464106559}
+  gain: 0
+  slower: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  faster: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &2092139007
 GameObject:
   m_ObjectHideFlags: 0
