@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class SimpleTransaltionGain : MonoBehaviour
 {
+    [SerializeField] private Text text;
     [SerializeField] private Transform source;
     [SerializeField] private float gain = 0f;
 
@@ -25,11 +27,23 @@ public class SimpleTransaltionGain : MonoBehaviour
         if (slower.action.WasPressedThisFrame())
         {
             gain = Mathf.Clamp(gain - 0.2f, 0, 10);
+            text.text = ""+GetSpeed();
         }
         if (faster.action.WasPressedThisFrame())
         {
             gain = Mathf.Clamp(gain + 0.2f, 0, 10);
+            text.text = ""+GetSpeed();
         }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        gain = Mathf.Clamp(speed - 1,0, 10);
+    }
+    
+    public float GetSpeed()
+    {
+        return gain+1;
     }
 
     private void ApplyGain()
