@@ -17,10 +17,8 @@ public class NodeMap : MonoBehaviour
     
     [SerializeField] private bool displayGrit = true;
     
-    private List<Node> _sourceNodes = new List<Node>(), _targetNodes = new List<Node>();
-    private GameObject _sourceRoot, _targetRoot;
-
-    public float fractionX, fractionY;
+    [SerializeField] private List<Node> _sourceNodes = new List<Node>(), _targetNodes = new List<Node>();
+    [SerializeField] private GameObject _sourceRoot, _targetRoot;
 
     // Start is called before the first frame update
     void Start()
@@ -56,18 +54,16 @@ public class NodeMap : MonoBehaviour
         float y4 = CubicPolate( getNodeY(x-1,y+2), getNodeY(x,y+2), getNodeY(x+1,y+2), getNodeY(x+2,y+2), fracx );
         
         float yFinal = CubicPolate( y1, y2, y3, y4, fracy );
-        fractionX = xFinal;
-        fractionY = yFinal;
 
         return new Vector3(xFinal, 0, yFinal);
 
     }
     
-    private float CubicPolate( float v0, float v1, float v2, float v3, float frac ) {
-        float A = (v3-v2)-(v0-v1);
-        float B = (v0-v1)-A;
-        float C = v2-v0; 
-        float D = v1;
+    private float CubicPolate( float v0, float v1, float v2, float v3, float frac ) { //0 1 2 3 -> 0.5 => 1.5
+        float A = (v3-v2)-(v0-v1); // 3-2-(0-1) = 1 --1 = 2
+        float B = (v0-v1)-A; // 0-1-2 = -3
+        float C = v2-v0;  // 2-0 = 2
+        float D = v1; //1
 
         return A*Mathf.Pow(frac,3)+B*Mathf.Pow(frac,2)+C*frac+D;
     }
