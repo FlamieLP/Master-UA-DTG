@@ -234,7 +234,7 @@ public class NodeMap : MonoBehaviour
         }
     }
     
-    private struct NodeSection
+    public struct NodeSection
     {
         public int x, y;
         public float ratioH, ratioV;
