@@ -34,7 +34,7 @@ public class NodeMapReader : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        /*Gizmos.color = Color.red;
         List<Vector3> b = new List<Vector3>();
         var s = XRGeneralSettings.Instance?.Manager?.activeLoader?.GetLoadedSubsystem<XRInputSubsystem>();
         if (s != null && s.TryGetBoundaryPoints(b))
@@ -43,6 +43,6 @@ public class NodeMapReader : MonoBehaviour
             {
                 Gizmos.DrawSphere(point, 0.3f);
             } 
-        }
+        }*/
     }
 }

@@ -4,21 +4,32 @@ using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
+    [SerializeField] private Texture2D map;
+    
     [SerializeField] private GameObject nodePrefab;
-    [SerializeField] private Vector2 sourceDimensions = Vector2.one;
-    [SerializeField] private int nodesPerAxis = 4;
+    [SerializeField] private float stepSize = 1f;
+    [SerializeField] private float maxSpeed = 4f;
     
     [SerializeField] private Transform[,] _sourceNodes, _targetNodes;
     [SerializeField] private GameObject sourceRoot, targetRoot;
 
+    private (int,int) GetDimensions()
+    {
+        return (
+            map.width+1,
+            map.height+1
+        );
+    }
+    
     public Vector3[,] GetSourceGrid()
     {
-        Vector3[,] grid = new Vector3[nodesPerAxis, nodesPerAxis];
-        for (var y = 0; y < nodesPerAxis; y++)
+        var (width, height) = GetDimensions();
+        Vector3[,] grid = new Vector3[width, height];
+        for (var y = 0; y < height; y++)
         {
-            for (var x = 0; x < nodesPerAxis; x++)
+            for (var x = 0; x < width; x++)
             {
-                grid[y, x] = _sourceNodes[y, x].position;
+                grid[y, x] = _sourceNodes[y, x].localPosition;
             }
         }
 
@@ -27,10 +38,11 @@ public class GridGenerator : MonoBehaviour
     
     public Vector3[,] GetTargetGrid()
     {
-        Vector3[,] grid = new Vector3[nodesPerAxis, nodesPerAxis];
-        for (var y = 0; y < nodesPerAxis; y++)
+        var (width, height) = GetDimensions();
+        Vector3[,] grid = new Vector3[width, height];
+        for (var y = 0; y < height; y++)
         {
-            for (var x = 0; x < nodesPerAxis; x++)
+            for (var x = 0; x < width; x++)
             {
                 grid[y, x] = _targetNodes[y, x].position;
             }
@@ -49,22 +61,46 @@ public class GridGenerator : MonoBehaviour
 
     private Transform[,] CreateNodeGrit(Transform parent)
     {
-        Transform[,] nodeList = new Transform[nodesPerAxis, nodesPerAxis];
-        Vector2 adjustForDimension = sourceDimensions / (nodesPerAxis - 1);
-        
-        for (var y = 0; y < nodesPerAxis; y++)
+        var (width, height) = GetDimensions();
+        print("Width = " + width);
+        print("Height = " + height);
+        Transform[,] nodeList = new Transform[height, width];
+
+        for (var y = 0; y < height; y++)
         {
-            for (var x = 0; x < nodesPerAxis; x++)
+            for (var x = 0; x < width; x++)
             {
-                var index = (y * nodesPerAxis) + x;
                 var node = Instantiate(nodePrefab, parent);
-                node.name = $"Node: {x} | {y}";
-                node.transform.localPosition = new Vector3(
-                    x * adjustForDimension.x,
-                    0,
-                    y * adjustForDimension.y
-                );
-                nodeList[y,x] = node.transform;
+                if (x == 0 && y == 0)
+                {
+                    node.name = $"Node: {x} | {y}";
+                    node.transform.localPosition = new Vector3(
+                        x,
+                        0,
+                        y
+                    );
+                    nodeList[y,x] = node.transform;
+                }
+                else
+                {
+                    float gainX = stepSize;
+                    float gainY = stepSize;
+                    if (x > 0 || y > 0)
+                    {
+                        var gainColor = map.GetPixel(Mathf.Max(0,x - 1), Mathf.Max(0,y - 1));
+                        gainX /= Mathf.Lerp(1, maxSpeed, gainColor.r);
+                        gainY /= Mathf.Lerp(1, maxSpeed, gainColor.b);
+                    }
+                    node.name = $"Node: {x} | {y}";
+                    var xOffset = x == 0 ? 0 : nodeList[y, x - 1].localPosition.x + gainX;
+                    var yOffset = y == 0 ? 0 : nodeList[y - 1, x].localPosition.z + gainY;
+                    node.transform.localPosition = new Vector3(
+                        xOffset,
+                        0,
+                        yOffset
+                    );
+                    nodeList[y,x] = node.transform;
+                }
             }
         }
 

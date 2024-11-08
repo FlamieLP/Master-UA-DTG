@@ -6,7 +6,6 @@ using UnityEngine;
 public class Inverse2DQI : MonoBehaviour
 {
     [SerializeField] private GridGenerator generator;
-    [SerializeField] private Transform source, target;
     [SerializeField] private Vector3[,] sourcGrid = new Vector3[3,3], targetGrid = new Vector3[3,3];
 
     [SerializeField] private float l, m;
@@ -26,12 +25,6 @@ public class Inverse2DQI : MonoBehaviour
             {new Vector3(5,0,1), new Vector3(6,0,1), new Vector3(7,0,1)},
             {new Vector3(5,0,2), new Vector3(6,0,2), new Vector3(7,0,2)},
         };
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        target.position = GetMappedPosition(source.position);
     }
 
     [ContextMenu("Update Grid")]
