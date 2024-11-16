@@ -11,6 +11,11 @@ public class SimpleTransaltionGain : MonoBehaviour
     [SerializeField] private float gain = 0f;
 
     [SerializeField] private InputActionReference slower, faster;
+    [SerializeField] private InputActionReference speedAxis;
+    
+    [SerializeField] private float speedPerSecond = 1f;
+    [SerializeField] private float minimalAdjust = 0.001f;
+    [SerializeField] private float maxSpeed = 10f;
     
     private Vector3 lastPos = Vector3.zero;
     
@@ -18,6 +23,7 @@ public class SimpleTransaltionGain : MonoBehaviour
     void Start()
     {
         lastPos = source.position;
+        text.text = $"{GetSpeed():00.000}";
     }
 
     // Update is called once per frame
@@ -26,13 +32,21 @@ public class SimpleTransaltionGain : MonoBehaviour
         ApplyGain();
         if (slower.action.WasPressedThisFrame())
         {
-            gain = Mathf.Clamp(gain - 0.2f, 0, 10);
-            text.text = ""+GetSpeed();
+            gain = Mathf.Clamp(gain - minimalAdjust, 0, maxSpeed);
+            text.text = $"{GetSpeed():00.000}";
         }
         if (faster.action.WasPressedThisFrame())
         {
-            gain = Mathf.Clamp(gain + 0.2f, 0, 10);
-            text.text = ""+GetSpeed();
+            gain = Mathf.Clamp(gain + minimalAdjust, 0, maxSpeed);
+            text.text = $"{GetSpeed():00.000}";
+        }
+        if (speedAxis.action.WasPerformedThisFrame())
+        {
+            float axis = speedAxis.action.ReadValue<Vector2>().y;
+            float axisSignedSquare = Mathf.Sign(axis) * Mathf.Abs(Mathf.Pow(axis, 2));
+            float speedAdjustment = axisSignedSquare * speedPerSecond * Time.deltaTime;
+            gain = Mathf.Clamp(gain + speedAdjustment, 0, maxSpeed);
+            text.text = $"{GetSpeed():00.000}";
         }
     }
 

@@ -828,6 +828,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Speed Value",
+                    "type": "Value",
+                    "id": "555db633-d58d-40d9-a310-ffc8beaf91e5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1026,6 +1035,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Decrease Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82a5c751-264f-4ed5-bd98-fd2df1fc2b90",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "",
+                    "action": "Speed Value",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1543,7 +1563,7 @@
                     "name": "Select",
                     "type": "Button",
                     "id": "ac96c10b-c955-4a46-8e67-bf16bc069b53",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
