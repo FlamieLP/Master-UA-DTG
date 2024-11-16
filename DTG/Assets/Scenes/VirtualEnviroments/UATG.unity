@@ -840,6 +840,37 @@ Transform:
   - {fileID: 581347940}
   m_Father: {fileID: 631183011}
   m_LocalEulerAnglesHint: {x: 0, y: 41.732, z: 0}
+--- !u!1 &431854515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 431854516}
+  m_Layer: 0
+  m_Name: Free Space
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &431854516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431854515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 584956178}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &438459708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1513,6 +1544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 584956178}
+  - component: {fileID: 584956179}
   m_Layer: 0
   m_Name: Enviroment
   m_TagString: Untagged
@@ -1535,8 +1567,26 @@ Transform:
   m_Children:
   - {fileID: 243267050}
   - {fileID: 631183011}
+  - {fileID: 431854516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &584956179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584956177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f253c4a3ecb86f4c8171dc768153696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  environmentFreeSpace: {fileID: 431854515}
+  environmentDenseSpace: {fileID: 631183010}
+  spawnFreeSpace: {fileID: 6617964999114039086, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  spawnDenseSpace: {fileID: 1605587256936501115, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  player: {fileID: 464106559}
 --- !u!1 &631183010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,7 +1602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &631183011
 Transform:
   m_ObjectHideFlags: 0

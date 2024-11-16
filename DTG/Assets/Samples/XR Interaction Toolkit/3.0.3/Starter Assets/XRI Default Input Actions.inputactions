@@ -2823,6 +2823,54 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "TG Actions",
+            "id": "9aa17327-7fa4-4209-b671-fe3608f33305",
+            "actions": [
+                {
+                    "name": "Spawn Free Sace",
+                    "type": "Button",
+                    "id": "6fa44335-3518-4e17-832e-63744d9175ff",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Spawn Dense Space",
+                    "type": "Button",
+                    "id": "dd515136-daed-4db3-a5fc-75d0fb209f69",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a26b44fb-c268-421a-9c59-badb1e3cc64e",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spawn Free Sace",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53cfb03e-5b97-4404-be1c-57cdca22af29",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spawn Dense Space",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
