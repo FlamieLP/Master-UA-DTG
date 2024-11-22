@@ -13,7 +13,7 @@ public class Inverse2DQI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sourcGrid = new Vector3[3,3]
+        /*sourcGrid = new Vector3[3,3]
         {
             {new Vector3(0,0,0), new Vector3(1,0,0), new Vector3(2,0,0)},
             {new Vector3(0,0,1), new Vector3(1,0,1), new Vector3(2,0,1)},
@@ -24,7 +24,7 @@ public class Inverse2DQI : MonoBehaviour
             {new Vector3(5,0,0), new Vector3(6,0,0), new Vector3(7,0,0)},
             {new Vector3(5,0,1), new Vector3(6,0,1), new Vector3(7,0,1)},
             {new Vector3(5,0,2), new Vector3(6,0,2), new Vector3(7,0,2)},
-        };
+        };*/
     }
 
     [ContextMenu("Update Grid")]
@@ -32,6 +32,13 @@ public class Inverse2DQI : MonoBehaviour
     {
         sourcGrid = generator.GetSourceGrid();
         targetGrid = generator.GetTargetGrid();
+    }
+    
+    [ContextMenu("Generate Grid")]
+    public void GenerateGrid()
+    {
+        generator.CreateNodes();
+        UpdateGrid();
     }
     
     Vector4 GetCoefficient(Vector4 points)
@@ -73,9 +80,12 @@ public class Inverse2DQI : MonoBehaviour
             throw new ArgumentException("Dimensions too small");
         }
 
-        for (int y = 0; y < nodes.GetLength(0) - 1; y++)
+        var height = nodes.GetLength(0) - 1;
+        var width = nodes.GetLength(1) - 1;
+
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < nodes.GetLength(1) - 1; x++)
+            for (int x = 0; x < width; x++)
             {
                 Quad q = new Quad(
                     nodes[y, x],
@@ -90,19 +100,42 @@ public class Inverse2DQI : MonoBehaviour
                 }
             }
         }
-        return new NodeMap.NodeSection(0, 0, 0, 0);
+        Quad boundingQuad = new Quad(
+            nodes[0, 0],
+            nodes[0, width],
+            nodes[height, width],
+            nodes[height, 0]
+        );
+        var boundingRatio = Interpolate(pos, boundingQuad);
+        return new NodeMap.NodeSection(-1, -1, boundingRatio.x, boundingRatio.y);
     }
     
     public Vector3 GetMappedPosition(Vector3 pos)
     {
+        var height = targetGrid.GetLength(0) - 1;
+        var width = targetGrid.GetLength(1) - 1;
         var section = Interpolate(pos, sourcGrid);
         var ratios = new Vector2(section.ratioH, section.ratioV);
         var x = section.x;
         var y = section.y;
-        Vector3 bl = targetGrid[y, x];
-        Vector3 br = targetGrid[y, x+1];
-        Vector3 tr = targetGrid[y+1, x+1];
-        Vector3 tl = targetGrid[y+1, x];
+        Vector3 bl;
+        Vector3 br;
+        Vector3 tr;
+        Vector3 tl;
+        if (x < 0 && y < 0)
+        {
+            bl = targetGrid[0, 0];
+            br = targetGrid[0, width];
+            tr = targetGrid[height, width];
+            tl = targetGrid[height, 0];
+        }else
+        {
+            bl = targetGrid[y, x];
+            br = targetGrid[y, x+1];
+            tr = targetGrid[y+1, x+1];
+            tl = targetGrid[y+1, x]; 
+        }
+        
         
         var alpha1=(1-ratios.y)*(1-ratios.x);
         var alpha2=ratios.x*(1-ratios.y);

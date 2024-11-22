@@ -1581,7 +1581,7 @@
                     "name": "Activate",
                     "type": "Button",
                     "id": "41976d89-60de-4deb-bff9-16b4af96b290",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -2834,7 +2834,7 @@
                     "id": "6fa44335-3518-4e17-832e-63744d9175ff",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold(duration=1)",
+                    "interactions": "MultiTap(tapCount=3)",
                     "initialStateCheck": false
                 },
                 {
@@ -2843,7 +2843,7 @@
                     "id": "dd515136-daed-4db3-a5fc-75d0fb209f69",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold(duration=1)",
+                    "interactions": "MultiTap(tapCount=3)",
                     "initialStateCheck": false
                 }
             ],
@@ -2867,6 +2867,94 @@
                     "processors": "",
                     "groups": "",
                     "action": "Spawn Dense Space",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "DTG Actions",
+            "id": "1992043d-68b3-48f0-82df-4de0b35fd2fa",
+            "actions": [
+                {
+                    "name": "Generate Grid",
+                    "type": "Button",
+                    "id": "710afa90-c867-459f-a0f4-75e2eafc7ac0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "MultiTap(tapCount=3)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Paint",
+                    "type": "Button",
+                    "id": "b4720aee-4d12-4717-bb98-ba1a8772e5cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pick",
+                    "type": "Button",
+                    "id": "8881f5b2-3b60-4364-996d-35929422caf0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Brush Value",
+                    "type": "Value",
+                    "id": "006cffdb-ec6f-49d4-beea-d3854754074e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e0401c5d-1c5a-45bb-ae3f-2988fc66ac1a",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e3821e7-534e-4a9f-a292-702d470d500c",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Paint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b204f1c1-2b3f-40f0-9b1c-22608db2cbc9",
+                    "path": "<XRController>{RightHand}/{GripButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37b2fb1b-aaae-4e94-917a-a4d1366e1404",
+                    "path": "<XRController>{RightHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "",
+                    "action": "Brush Value",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
