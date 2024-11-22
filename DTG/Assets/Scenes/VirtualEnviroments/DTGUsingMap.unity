@@ -1307,6 +1307,7 @@ GameObject:
   - component: {fileID: 553911961}
   - component: {fileID: 553911963}
   - component: {fileID: 553911962}
+  - component: {fileID: 553911964}
   m_Layer: 0
   m_Name: God
   m_TagString: Untagged
@@ -1348,6 +1349,7 @@ MonoBehaviour:
   maxSpeed: 4
   sourceRoot: {fileID: 0}
   targetRoot: {fileID: 0}
+  model: {fileID: 553911964}
 --- !u!114 &553911963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1363,6 +1365,18 @@ MonoBehaviour:
   generator: {fileID: 553911962}
   l: 0
   m: 0
+--- !u!114 &553911964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553911959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2801fa8650dd80e4d85b3aaac5c20ff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &707946876
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,9 @@ public class GridGenerator : MonoBehaviour
     [SerializeField] private Transform[,] _sourceNodes, _targetNodes;
     [SerializeField] private GameObject sourceRoot, targetRoot;
 
+    [Header("Spring Model")] [SerializeField]
+    private SpringMassModel model;
+
     private (int,int) GetDimensions()
     {
         return (
@@ -50,13 +53,28 @@ public class GridGenerator : MonoBehaviour
 
         return grid;
     }
+    
+    [ContextMenu("Converge Grid")]
+    public void ConvergeGrid()
+    {
+        model.Init(_sourceNodes, map);
+        model.NextSteps(100);
+        model.UpdateNodes(_sourceNodes);
+        
+    }
+    
+    [ContextMenu("Share Grid")]
+    public void ShareGrid()
+    {
+        model.Init(_targetNodes, map);
+    }
 
     [ContextMenu("Create new Node Grid")]
     public void CreateNodes()
     {
         Setup();
-        _sourceNodes = CreateNodeGrid(sourceRoot.transform);
-        _targetNodes = CreateNodeGridUniform(targetRoot.transform);
+        _sourceNodes = CreateNodeGridUniform(targetRoot.transform, stepSizeSource);//CreateNodeGrid(sourceRoot.transform);
+        _targetNodes = CreateNodeGridUniform(targetRoot.transform, stepSizeTarget);
     }
 
     private Transform[,] CreateNodeGrid(Transform parent)
@@ -107,7 +125,7 @@ public class GridGenerator : MonoBehaviour
         return nodeList;
     }
     
-    private Transform[,] CreateNodeGridUniform(Transform parent)
+    private Transform[,] CreateNodeGridUniform(Transform parent, float stepSize)
     {
         var (width, height) = GetDimensions();
         print("Width = " + width);
@@ -131,8 +149,8 @@ public class GridGenerator : MonoBehaviour
                 }
                 else
                 {
-                    float gainX = stepSizeTarget;
-                    float gainY = stepSizeTarget;
+                    float gainX = stepSize;
+                    float gainY = stepSize;
                     node.name = $"Node: {x} | {y}";
                     var xOffset = x == 0 ? 0 : nodeList[y, x - 1].localPosition.x + gainX;
                     var yOffset = y == 0 ? 0 : nodeList[y - 1, x].localPosition.z + gainY;

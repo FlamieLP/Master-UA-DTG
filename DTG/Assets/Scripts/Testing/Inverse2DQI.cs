@@ -38,6 +38,7 @@ public class Inverse2DQI : MonoBehaviour
     public void GenerateGrid()
     {
         generator.CreateNodes();
+        generator.ConvergeGrid();
         UpdateGrid();
     }
     
