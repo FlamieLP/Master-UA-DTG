@@ -53,11 +53,12 @@ public class SpringMassModel : MonoBehaviour
         }
     }
 
-    public void Init(Transform[,] initialNodes, Texture2D map)
+    public void Init(Transform[,] initialNodes, Texture2D map, float maxGain)
     {
         nodes.Clear();
         springs.Clear();
-        
+
+        var invGain = 1 / Mathf.Max(1, maxGain);
         var (width, height) = (
             initialNodes.GetLength(1),
             initialNodes.GetLength(0)
@@ -88,7 +89,7 @@ public class SpringMassModel : MonoBehaviour
                     var gain1 = map.GetPixel(mapIndex1, y).r;
                     var gain2 = map.GetPixel(mapIndex2, y).r;
                     var factor = (gain1+ gain2) / 2f;
-                    var restLength = Mathf.Lerp(1, .25f, factor);
+                    var restLength = Mathf.Lerp(1, invGain, factor);
                     
                     springs.Add(new Spring(nodes[index], nodes[index + width], restLength));
                 }
@@ -100,7 +101,7 @@ public class SpringMassModel : MonoBehaviour
                     var gain1 = map.GetPixel(x, mapIndex1).r;
                     var gain2 = map.GetPixel(x, mapIndex2).r;
                     var factor = (gain1+ gain2) / 2f;
-                    var restLength = Mathf.Lerp(1, .25f, factor);
+                    var restLength = Mathf.Lerp(1, invGain, factor);
                     
                     springs.Add(new Spring(nodes[index], nodes[index + 1], restLength));
                 }
@@ -109,7 +110,7 @@ public class SpringMassModel : MonoBehaviour
                 {
                     var mapIndex = Mathf.Clamp(y, 0, height - 1);
                     var gain = map.GetPixel(mapIndex, y).r;
-                    var restLength = Mathf.Lerp(1, .25f, gain);
+                    var restLength = Mathf.Lerp(1, invGain, gain);
                     
                     springs.Add(new Spring(nodes[index], nodes[index + 1 + width], restLength));
                 }
@@ -118,7 +119,7 @@ public class SpringMassModel : MonoBehaviour
                 {
                     var mapIndex = Mathf.Clamp(x-1, 0, height - 1);
                     var gain = map.GetPixel(mapIndex, y).r;
-                    var restLength = Mathf.Lerp(1, .25f, gain);
+                    var restLength = Mathf.Lerp(1, invGain, gain);
                     
                     springs.Add(new Spring(nodes[index], nodes[index - 1 + width], restLength));
                 }
@@ -181,7 +182,7 @@ public class SpringMassModel : MonoBehaviour
             // Verlet Integration
             Vector2 temp = pos;
             var velocity = (pos - oldPos) * 0.8f;
-            pos += velocity + acceleration * deltaTime * deltaTime;
+            pos += velocity + acceleration * (deltaTime * deltaTime);
             oldPos = temp;
 
             // Reset acceleration for the next frame
@@ -194,13 +195,15 @@ public class SpringMassModel : MonoBehaviour
         public Node nodeA;
         public Node nodeB;
         public float restLength;
-        public float stiffness = 50;
+        float stiffness = 50;
+        float damping = 14.14f;
         
         public Spring(Node nodeA, Node nodeB, float length)
         {
             this.nodeA = nodeA;
             this.nodeB = nodeB;
-            restLength = Vector2.Distance(nodeA.pos, nodeB.pos) * length;//length;
+            restLength = Vector2.Distance(nodeA.pos, nodeB.pos) * length;
+            damping = 2 * Mathf.Sqrt(stiffness);
         }
         
         public void ApplyForce()
@@ -217,7 +220,7 @@ public class SpringMassModel : MonoBehaviour
             }
 
             Vector2 relVelocity = (nodeA.pos - nodeA.oldPos) - (nodeB.pos - nodeB.oldPos);
-            Vector2 dampForce = Vector2.Dot(relVelocity, direction.normalized) * 14.14f * direction.normalized;
+            Vector2 dampForce = Vector2.Dot(relVelocity, direction.normalized) * damping * direction.normalized;
 
             nodeA.AddForce(force + dampForce);
             nodeB.AddForce(-force -dampForce);

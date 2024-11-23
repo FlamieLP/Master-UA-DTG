@@ -10,7 +10,6 @@ public class NodeMap : MonoBehaviour
 {
     [SerializeField] private Node nodePrefab;
     
-    [SerializeField] private Transform sourceOrigin, targetOrigin;
     [SerializeField] private Vector2 sourceDimensions = Vector2.one;
     [SerializeField] private int nodesPerAxis = 4;
     

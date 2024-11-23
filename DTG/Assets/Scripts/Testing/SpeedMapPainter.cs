@@ -21,7 +21,7 @@ public class SpeedMapPainter : MonoBehaviour
         {
             Paint();
         }
-        if (pick.action.IsPressed())
+        if (pick.action.WasPerformedThisFrame())
         {
             Pick();
         }

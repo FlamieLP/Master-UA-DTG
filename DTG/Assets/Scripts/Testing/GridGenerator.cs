@@ -57,7 +57,7 @@ public class GridGenerator : MonoBehaviour
     [ContextMenu("Converge Grid")]
     public void ConvergeGrid()
     {
-        model.Init(_sourceNodes, map);
+        model.Init(_sourceNodes, map, maxSpeed);
         model.NextSteps(100);
         model.UpdateNodes(_sourceNodes);
         
@@ -66,7 +66,7 @@ public class GridGenerator : MonoBehaviour
     [ContextMenu("Share Grid")]
     public void ShareGrid()
     {
-        model.Init(_targetNodes, map);
+        model.Init(_targetNodes, map, maxSpeed);
     }
 
     [ContextMenu("Create new Node Grid")]

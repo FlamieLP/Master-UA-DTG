@@ -9,23 +9,6 @@ public class Inverse2DQI : MonoBehaviour
     [SerializeField] private Vector3[,] sourcGrid = new Vector3[3,3], targetGrid = new Vector3[3,3];
 
     [SerializeField] private float l, m;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        /*sourcGrid = new Vector3[3,3]
-        {
-            {new Vector3(0,0,0), new Vector3(1,0,0), new Vector3(2,0,0)},
-            {new Vector3(0,0,1), new Vector3(1,0,1), new Vector3(2,0,1)},
-            {new Vector3(0,0,2), new Vector3(1,0,2), new Vector3(2,0,2)},
-        };
-        targetGrid = new Vector3[3,3]
-        {
-            {new Vector3(5,0,0), new Vector3(6,0,0), new Vector3(7,0,0)},
-            {new Vector3(5,0,1), new Vector3(6,0,1), new Vector3(7,0,1)},
-            {new Vector3(5,0,2), new Vector3(6,0,2), new Vector3(7,0,2)},
-        };*/
-    }
 
     [ContextMenu("Update Grid")]
     public void UpdateGrid()
