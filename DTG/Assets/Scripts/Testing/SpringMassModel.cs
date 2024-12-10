@@ -109,7 +109,7 @@ public class SpringMassModel : MonoBehaviour
                 if (y < height - 1 && x < height-1)
                 {
                     var mapIndex = Mathf.Clamp(y, 0, height - 1);
-                    var gain = map.GetPixel(mapIndex, y).r;
+                    var gain = map.GetPixel(x, mapIndex).r;
                     var restLength = Mathf.Lerp(1, invGain, gain);
                     
                     springs.Add(new Spring(nodes[index], nodes[index + 1 + width], restLength));
@@ -143,6 +143,7 @@ public class SpringMassModel : MonoBehaviour
         Gizmos.color = Color.blue;
         foreach (Spring spring in springs)
         {
+            Gizmos.color = new Color(spring.GetStress(), 0, 1);
             Gizmos.DrawLine(spring.nodeA.pos, spring.nodeB.pos);
         }
     }
@@ -153,6 +154,7 @@ public class SpringMassModel : MonoBehaviour
         public Vector2 pos, oldPos;
         public Vector2 acceleration;
         public bool stickyX, stickyY;
+        public Vector2 anchor;
         
         public Node((int,int) index, Vector2 position, bool stickyX, bool stickyY)
         {
@@ -162,6 +164,14 @@ public class SpringMassModel : MonoBehaviour
             acceleration = Vector2.zero;
             this.stickyX = stickyX;
             this.stickyY = stickyY;
+            if (stickyX)
+            {
+                anchor.x = pos.x;
+            }
+            if (stickyY)
+            {
+                anchor.y = pos.y;
+            }
         }
         
         public void AddForce(Vector2 force)
@@ -183,6 +193,14 @@ public class SpringMassModel : MonoBehaviour
             Vector2 temp = pos;
             var velocity = (pos - oldPos) * 0.8f;
             pos += velocity + acceleration * (deltaTime * deltaTime);
+            /*if (stickyX)
+            {
+                pos.x = Mathf.Clamp(pos.x, 0, anchor.x);
+            }
+            if (stickyY)
+            {
+                pos.y = Mathf.Clamp(pos.y, 0, anchor.y);
+            }*/
             oldPos = temp;
 
             // Reset acceleration for the next frame
@@ -197,7 +215,7 @@ public class SpringMassModel : MonoBehaviour
         public float restLength;
         float stiffness = 50;
         float damping = 14.14f;
-        
+
         public Spring(Node nodeA, Node nodeB, float length)
         {
             this.nodeA = nodeA;
@@ -209,7 +227,7 @@ public class SpringMassModel : MonoBehaviour
         public void ApplyForce()
         {
             Vector2 direction = nodeB.pos - nodeA.pos;
-            float currentLength = Mathf.Min(direction.magnitude, 2*restLength);
+            float currentLength = direction.magnitude;//Mathf.Min(direction.magnitude, 2*restLength);
             float displacement = currentLength - restLength;
             Vector2 force = direction.normalized * (displacement * stiffness);
 
@@ -224,6 +242,14 @@ public class SpringMassModel : MonoBehaviour
 
             nodeA.AddForce(force + dampForce);
             nodeB.AddForce(-force -dampForce);
+        }
+
+        public float GetStress()
+        {
+            Vector2 direction = nodeB.pos - nodeA.pos;
+            float currentLength = Mathf.Min(direction.magnitude, 2*restLength);
+            float displacement = currentLength - restLength;
+            return Mathf.Abs(displacement) / restLength;
         }
     }
 }
