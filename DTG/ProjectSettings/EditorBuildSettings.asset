@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/VirtualEnviroments/DTG.unity
     guid: 77af801209943b647af7fd6e104b0fae
   - enabled: 1
+    path: Assets/Scenes/VirtualEnviroments/TG.unity
+    guid: d6337bba46ba82746aecff849eebd1c8
+  - enabled: 1
     path: Assets/Scenes/VirtualEnviroments/UATG.unity
     guid: 3f92ee2742ddbca428677e5a5c6f720a
   m_configObjects:
